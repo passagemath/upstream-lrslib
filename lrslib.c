@@ -84,10 +84,10 @@ char *lrs_basename(char *path);
 /* signals handling            */
 /*******************************/
 #ifndef SIGNALS
-static void checkpoint ();
-static void die_gracefully ();
+static void checkpoint (int);
+static void die_gracefully (int);
 static void setup_signals (void);
-static void timecheck ();
+static void timecheck (int);
 #endif
 
 /*******************************/
@@ -6368,7 +6368,7 @@ setup_signals ()
 }
 
 static void
-timecheck ()
+timecheck (int signum)
 {
   lrs_dump_state ();
   errcheck ("signal", signal (SIGALRM, timecheck));
@@ -6376,14 +6376,14 @@ timecheck ()
 }
 
 static void
-checkpoint ()
+checkpoint (int signum)
 {
   lrs_dump_state ();
   errcheck ("signal", signal (SIGUSR1, checkpoint));
 }
 
 static void
-die_gracefully ()
+die_gracefully (int signum)
 {
   lrs_dump_state ();
 
